@@ -1,0 +1,35 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    puppet-archive (3.2.1)
+      puppetlabs-stdlib (< 6.0.0, >= 4.13.1)
+    puppetlabs-apt (6.1.1)
+      puppetlabs-stdlib (< 6.0.0, >= 4.16.0)
+      puppetlabs-translate (< 2.0.0, >= 1.0.0)
+    puppetlabs-chocolatey (3.1.0)
+      puppetlabs-powershell (< 3.0.0, >= 1.0.1)
+      puppetlabs-registry (< 3.0.0, >= 1.0.0)
+      puppetlabs-stdlib (< 6.0.0, >= 4.6.0)
+    puppetlabs-powershell (2.2.0)
+    puppetlabs-registry (2.1.0)
+    puppetlabs-stdlib (5.1.0)
+    puppetlabs-translate (1.2.0)
+    rgb-nvidia (1.0.1)
+      puppetlabs-chocolatey (>= 1.1.0)
+      puppetlabs-stdlib (>= 1.0.0)
+
+GIT
+  remote: https://github.com/Syntox32/rgb-hashcat
+  ref: master
+  sha: 6f6a89239c11993259327399f762a1cd077a88da
+  specs:
+    rgb-hashcat (0.6.0)
+      puppet-archive (= 3.2.1)
+      puppetlabs-apt (>= 2.2.2)
+      puppetlabs-chocolatey (>= 1.1.0)
+      puppetlabs-stdlib (>= 1.0.0)
+      rgb-nvidia (>= 1.0.1)
+
+DEPENDENCIES
+  rgb-hashcat (>= 0)
+

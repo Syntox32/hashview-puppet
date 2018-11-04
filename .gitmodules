@@ -1,0 +1,3 @@
+[submodule "modules/rgb-hashcat"]
+	path = modules/rgb-hashcat
+	url = https://github.com/Syntox32/rgb-hashcat

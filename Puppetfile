@@ -19,6 +19,10 @@ metadata
 mod 'rgb-hashcat',
 	:git => 'https://github.com/Syntox32/rgb-hashcat'
 
+
+mod 'maestrodev-rvm', '1.13.1'
+mod 'puppetlabs-vcsrepo', '2.4.0'
+
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',
 #   :git => 'https://github.com/puppetlabs/puppetlabs-apt.git',

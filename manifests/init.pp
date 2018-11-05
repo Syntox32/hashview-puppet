@@ -99,6 +99,13 @@ class hashview (
 							"set dict/entry[*][.=\"hc_binary_path\"]/string \"/opt/hashcat/hashcat64.bin\""]
 				}
 
+				exec { 'copy-hashview-json-config':
+					command => 'cp config/agent_config.travis.json config/agent_config.json',
+					cwd => "${hashview_install_path}/hashview",
+					path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
+					user => 'ubuntu',
+				}
+
 				exec { 'bundle-exec':
 					environment => ["RACK_ENV=production"],
 					command => "bundle exec rake db:migrate || bundle exec rake db:setup",

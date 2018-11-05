@@ -1,6 +1,6 @@
 class hashview (
   $port = $hashview::params::port,
-  #db_password = $hashview::params::db_password,
+  $db_password = $hashview::params::db_password,
   $hostname = $hashview::params::hostname,
   $hashcat_install_path = $hashview::params::hashcat_install_path,
   $hashview_install_path = $hashview::params::hashview_install_path,
@@ -50,14 +50,14 @@ class { '::mysql::server':
   override_options        => $override_options
 }
 
-file { '/opt/hashview':
+file { $hashview_install_path:
 	ensure => 'directory',
 	owner  => 'ubuntu',
 	group  => 'ubuntu',
   mode   => '0770',
 }
 
-vcsrepo { '/opt/hashview/hashview':
+vcsrepo { "${hashview_install_path}/hashview":
 	ensure => present,
 	provider => git,
 	source => 'https://github.com/hashview/hashview.git',
@@ -66,7 +66,7 @@ vcsrepo { '/opt/hashview/hashview':
 	group => 'ubuntu',
 }
 
-file { '/opt/hashview/hashview/Procfile':
+file { "${hashview_install_path}/hashview/Procfile":
 	ensure => file,
 	content => @(END/L),
 		mgmt-worker: TERM_CHILD=1 COUNT=5 QUEUE=management rake resque:workers
@@ -78,20 +78,20 @@ file { '/opt/hashview/hashview/Procfile':
 
 exec { 'bundle-install':
 	command => "bundle install",
-	cwd => '/opt/hashview/hashview',
+	cwd => "${hashview_install_path}/hashview",
 	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 	user => 'ubuntu',
 }
 
 exec { 'copy-hashview-config':
 	command => "cp config/database.yml.example config/database.yml",
-	cwd => '/opt/hashview/hashview',
+	cwd => "${hashview_install_path}/hashview",
 	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 	user => 'ubuntu',
 }
 
 yaml_setting { 'set_db_password':
-  target => '/opt/hashview/hashview/config/database.yml',
+  target => "${hashview_install_path}/hashview/config/database.yml",
   key => 'production/password',
   value => $db_password,
 }
@@ -99,7 +99,7 @@ yaml_setting { 'set_db_password':
 exec { 'bundle-exec':
 	environment => ["RACK_ENV=production"],
 	command => "bundle exec rake db:migrate || bundle exec rake db:setup",
-	cwd => '/opt/hashview/hashview',
+	cwd => "${hashview_install_path}/hashview",
 	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 	user => 'ubuntu',
 }
@@ -107,7 +107,7 @@ exec { 'bundle-exec':
 #exec { 'foreman-start':
 #	environment => ["RACK_ENV=production", "TZ=Europe/Oslo"],
 #	command => "foreman start",
-#	cwd => '/opt/hashview/hashview',
+#	cwd => "${hashview_install_path}/hashview",
 #	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 #	user => 'ubuntu',
 #}

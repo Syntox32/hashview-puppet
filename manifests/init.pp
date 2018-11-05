@@ -29,13 +29,9 @@ rvm_gem {
 }
 
 package { 'git': 	ensure => 'latest', }
-
 package { 'ruby': 	ensure => 'latest', }
 package { 'rubygems': 	ensure => 'latest', }
-
 package { 'ruby-bundler': 	ensure => 'latest', }
-#package { 'mysql-server': 	ensure => 'latest', }
-
 package { 'libmysqlclient-dev': 	ensure => 'latest', }
 package { 'redis-server': 	ensure => 'latest', }
 package { 'openssl': 	ensure => 'latest', }
@@ -45,6 +41,8 @@ class { '::mysql::server':
   remove_default_accounts => true,
   override_options        => $override_options
 }
+
+
 
 file { '/opt/hashview':
 	ensure => 'directory',
@@ -63,13 +61,7 @@ vcsrepo { '/opt/hashview/hashview':
 }
 
 file { '/opt/hashview/hashview/Procfile':
-	ensure => file,
-	content => @(END/L),
-		mgmt-worker: TERM_CHILD=1 COUNT=5 QUEUE=management rake resque:workers
-		hashcat-worker: TERM_CHILD=1 COUNT=1 QUEUE=hashcat rake resque:work
-		background-worker: QUEUE=* rake resque:scheduler
-		web: ruby ./hashview.rb
-		| END
+	source => 'puppet:///modules/hashview/Procfile',
 }
 
 exec { 'bundle-install':

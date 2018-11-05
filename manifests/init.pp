@@ -1,4 +1,10 @@
-
+class hashview (
+  $port = $hashview::params::port,
+  $hostname = $hashview::params::hostname,
+  $hashcat_install_path = $hashview::params::hashcat_install_path,
+  $hashview_install_path = $hashview::params::hashview_install_path,
+) inherits hashview::params {
+tag 'hashview'
 include 'hashcat'
 
 class { '::rvm': }
@@ -96,6 +102,4 @@ exec { 'bundle-exec':
 #	user => 'ubuntu',
 #}
 
-
-
-
+}

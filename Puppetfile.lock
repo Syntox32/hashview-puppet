@@ -1,6 +1,10 @@
 FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
+    golja-gnupg (1.2.3)
+    maestrodev-rvm (1.13.1)
+      golja-gnupg (>= 1.2.0)
+      puppetlabs-stdlib (>= 4.2.0)
     puppet-archive (3.2.1)
       puppetlabs-stdlib (< 6.0.0, >= 4.13.1)
     puppetlabs-apt (6.1.1)
@@ -14,6 +18,7 @@ FORGE
     puppetlabs-registry (2.1.0)
     puppetlabs-stdlib (5.1.0)
     puppetlabs-translate (1.2.0)
+    puppetlabs-vcsrepo (2.4.0)
     rgb-nvidia (1.0.1)
       puppetlabs-chocolatey (>= 1.1.0)
       puppetlabs-stdlib (>= 1.0.0)
@@ -31,5 +36,7 @@ GIT
       rgb-nvidia (>= 1.0.1)
 
 DEPENDENCIES
+  maestrodev-rvm (= 1.13.1)
+  puppetlabs-vcsrepo (= 2.4.0)
   rgb-hashcat (>= 0)
 

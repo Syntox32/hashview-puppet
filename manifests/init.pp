@@ -1,3 +1,10 @@
+class hashview (
+  $port = $hashview::params::port,
+  $hostname = $hashview::params::hostname,
+  $hashcat_install_path = $hashview::params::hashcat_install_path,
+  $hashview_install_path = $hashview::params::hashview_install_path,
+) inherits hashview::params {
+tag 'hashview'
 include 'hashcat'
 
 class { '::rvm': }
@@ -44,4 +51,5 @@ exec { 'bundle-test':
 	cwd => '/opt/hashview',
 	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 	user => 'ubuntu',
+}
 }

@@ -23,6 +23,7 @@ mod 'rgb-hashcat',
 mod 'maestrodev-rvm', '1.13.1'
 mod 'puppetlabs-vcsrepo', '2.4.0'
 mod 'puppetlabs-mysql', '7.0.0'
+mod 'reidmv-yamlfile', '0.2.0'
 
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',

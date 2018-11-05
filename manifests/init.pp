@@ -1,11 +1,15 @@
 class hashview (
   $port = $hashview::params::port,
+  #db_password = $hashview::params::db_password,
   $hostname = $hashview::params::hostname,
   $hashcat_install_path = $hashview::params::hashcat_install_path,
   $hashview_install_path = $hashview::params::hashview_install_path,
 ) inherits hashview::params {
 tag 'hashview'
 include 'hashcat'
+
+#package { 'ruby': ensure => 'latest', }
+#package { 'rubygems': ensure => 'latest', }
 
 class { '::rvm': }
 #rvm::system_user { ubuntu: ; }
@@ -41,7 +45,7 @@ package { 'redis-server': 	ensure => 'latest', }
 package { 'openssl': 	ensure => 'latest', }
 
 class { '::mysql::server':
-  root_password           => 'CHANGEME',
+  root_password           => $db_password,
   remove_default_accounts => true,
   override_options        => $override_options
 }
@@ -84,6 +88,12 @@ exec { 'copy-hashview-config':
 	cwd => '/opt/hashview/hashview',
 	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 	user => 'ubuntu',
+}
+
+yaml_setting { 'set_db_password':
+  target => '/opt/hashview/hashview/config/database.yml',
+  key => 'production/password',
+  value => $db_password,
 }
 
 exec { 'bundle-exec':

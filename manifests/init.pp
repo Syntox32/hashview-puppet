@@ -2,7 +2,7 @@
 include 'hashcat'
 
 class { '::rvm': }
-rvm::system_user { ubuntu: ; }
+#rvm::system_user { ubuntu: ; }
 
 rvm_system_ruby {
 	'ruby-2.2.2':
@@ -56,6 +56,16 @@ vcsrepo { '/opt/hashview/hashview':
 	group => 'ubuntu',
 }
 
+file { '/opt/hashview/hashview/Procfile':
+	ensure => file,
+	content => @(END/L),
+		mgmt-worker: TERM_CHILD=1 COUNT=5 QUEUE=management rake resque:workers
+		hashcat-worker: TERM_CHILD=1 COUNT=1 QUEUE=hashcat rake resque:work
+		background-worker: QUEUE=* rake resque:scheduler
+		web: ruby ./hashview.rb
+		| END
+}
+
 exec { 'bundle-install':
 	command => "bundle install",
 	cwd => '/opt/hashview/hashview',
@@ -78,13 +88,13 @@ exec { 'bundle-exec':
 	user => 'ubuntu',
 }
 
-exec { 'foreman-start':
-	environment => ["RACK_ENV=production", "TZ=Europe/Oslo"],
-	command => "foreman start",
-	cwd => '/opt/hashview/hashview',
-	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
-	user => 'ubuntu',
-}
+#exec { 'foreman-start':
+#	environment => ["RACK_ENV=production", "TZ=Europe/Oslo"],
+#	command => "foreman start",
+#	cwd => '/opt/hashview/hashview',
+#	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
+#	user => 'ubuntu',
+#}
 
 
 

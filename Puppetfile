@@ -24,6 +24,8 @@ mod 'puppetlabs-vcsrepo', '2.4.0'
 mod 'puppetlabs-mysql', '7.0.0'
 mod 'arioch-redis', '3.3.0'
 mod 'reidmv-yamlfile', '0.2.0'
+mod 'puppetlabs-augeas_core', '1.0.3'
+
 
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',

@@ -2,7 +2,6 @@ class hashview (
 					$port = $hashview::params::port,
 					$db_password = $hashview::params::db_password,
 					$hostname = $hashview::params::hostname,
-					$hashcat_install_path = $hashview::params::hashcat_install_path,
 					$hashview_install_path = $hashview::params::hashview_install_path,
 				) inherits hashview::params {
 				tag 'hashview'
@@ -89,6 +88,15 @@ class hashview (
 					target => "${hashview_install_path}/hashview/config/database.yml",
 					key => 'production/password',
 					value => $db_password,
+				}
+
+				augeas { "hashview-config":
+					incl => "${hashview_install_path}/hashview/config/agent_config.travis.json",
+					lens => "Json.lns",
+					#context => "/files${hashview_install_path}/hashview/config/agent_config.travis.json",
+					changes => ["set dict/entry[*][.=\"ip\"]/string \"${hostname}\"",
+							"set dict/entry[*][.=\"port\"]/string \"${port}\"",
+							"set dict/entry[*][.=\"hc_binary_path\"]/string \"/opt/hashcat/hashcat64.bin\""]
 				}
 
 				exec { 'bundle-exec':

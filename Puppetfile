@@ -22,11 +22,8 @@ mod 'rgb-hashcat',
 mod 'maestrodev-rvm', '1.13.1'
 mod 'puppetlabs-vcsrepo', '2.4.0'
 mod 'puppetlabs-mysql', '7.0.0'
-<<<<<<< HEAD
 mod 'arioch-redis', '3.3.0'
-=======
 mod 'reidmv-yamlfile', '0.2.0'
->>>>>>> 7d269f2fba7984620d557ef2159d1b79966d6330
 
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',

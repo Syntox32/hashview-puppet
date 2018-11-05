@@ -33,7 +33,6 @@ package { 'ruby': 	ensure => 'latest', }
 package { 'rubygems': 	ensure => 'latest', }
 package { 'ruby-bundler': 	ensure => 'latest', }
 package { 'libmysqlclient-dev': 	ensure => 'latest', }
-package { 'redis-server': 	ensure => 'latest', }
 package { 'openssl': 	ensure => 'latest', }
 
 class { '::mysql::server':
@@ -42,7 +41,11 @@ class { '::mysql::server':
   override_options        => $override_options
 }
 
-
+class { '::redis':
+	bind => '127.0.0.1',
+	service_enable => false,
+	#service_hasstatus => false,
+}
 
 file { '/opt/hashview':
 	ensure => 'directory',
@@ -84,6 +87,15 @@ exec { 'bundle-exec':
 	cwd => '/opt/hashview/hashview',
 	path => ['/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers', '/usr/bin', '/usr/bash', '/bin'],
 	user => 'ubuntu',
+}
+
+file { '/etc/systemd/system/hashview.service':
+	source => 'puppet:///modules/hashview/hashview.service',
+	notify => Service['hashview'],
+}
+
+service { 'hashview':
+	ensure => running,
 }
 
 #exec { 'foreman-start':

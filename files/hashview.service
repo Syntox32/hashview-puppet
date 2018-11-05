@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the hashview service
+
+[Service]
+Environment=RACK_ENV=production
+WorkingDirectory=/opt/hashview/hashview
+ExecStart=/usr/local/rvm/gems/ruby-2.2.2@hashview/wrappers/foreman start
+
+[Install]
+WantedBy=multi-user.target
